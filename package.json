@@ -1,0 +1,23 @@
+{
+  "name": "playwright-test",
+  "version": "1.0.0",
+  "description": "Playwright Test - API and UI",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chonglee30/Playwright-Test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chonglee30/Playwright-Test/issues"
+  },
+  "homepage": "https://github.com/chonglee30/Playwright-Test#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "@types/node": "^24.0.14",
+    "dotenv": "^17.2.0"
+  }
+}
