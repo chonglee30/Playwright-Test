@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Playwright Test - API and UI",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test-likes": "npx playwright test --project=likeCounterTest"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chonglee30/Playwright-Test.git"
