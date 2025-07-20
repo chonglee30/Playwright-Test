@@ -50,22 +50,6 @@ export default defineConfig({
       testMatch: 'deleteArticle.setup.ts',
     },
     {
-      name: 'logArticleSetUp',
-      testMatch: 'logArticle.setup.ts',
-      dependencies: ['setup'],
-      teardown: 'logCleanUp'
-    },
-    {
-      name: 'logCleanUp',
-      testMatch: 'logCleanUp.setup.ts',
-    },
-    {
-        name: 'logArticle',
-        testMatch: 'logArticle.spec.ts',
-        use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json' },
-        dependencies: ['logArticleSetUp']
-    },
-    {
       name: 'chromium',
       testIgnore: 'testLikesWithSetUp.spec.ts',
       use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json'},
@@ -84,7 +68,7 @@ export default defineConfig({
       dependencies: ['setup']
     },
     {
-      name: 'likeCounter',
+      name: 'likeCounterTest',
       testMatch: 'testLikesWithSetUp.spec.ts',
       use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json' },
       dependencies: ['articleSetup']
