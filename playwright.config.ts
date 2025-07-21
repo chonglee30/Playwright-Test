@@ -51,18 +51,21 @@ export default defineConfig({
     },
     {
       name: 'chromium',
+      testMatch: /.*feature-.*\.spec\.ts$/,
       testIgnore: ['testLikesWithSetUp.spec.ts', 'testLogin.spec.ts'],
       use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json'},
       dependencies: ['setup']
     },
     {
       name: 'firefox',
+      testMatch: /.*feature-.*\.spec\.ts$/,
       testIgnore: ['testLikesWithSetUp.spec.ts', 'testLogin.spec.ts'],
       use: { ...devices['Desktop Firefox'], storageState: '.auth/user.json'},
       dependencies: ['setup']
     },
     {
       name: 'webkit',
+      testMatch: /.*feature-.*\.spec\.ts$/,
       testIgnore: ['testLikesWithSetUp.spec.ts', 'testLogin.spec.ts'],
       use: { ...devices['Desktop Safari'], storageState: '.auth/user.json'},
       dependencies: ['setup']

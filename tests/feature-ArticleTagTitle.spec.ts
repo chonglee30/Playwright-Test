@@ -39,4 +39,5 @@ test('Check mocked article title and description', async ({ page }) => {
   await page.getByText('Global Feed').click()
   await expect(page.locator('app-article-list .article-preview h1').first()).toHaveText('Mocked Article Title')
   await expect(page.locator('app-article-list .article-preview p').first()).toContainText('Mocked Article Description')
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
 })

@@ -4,7 +4,8 @@
   "description": "Playwright Test - API and UI",
   "main": "index.js",
   "scripts": {
-    "test-likes": "npx playwright test --project=likeCounterTest"
+    "test-likes": "npx playwright test --project=likeCounterTest",
+    "projects-chrome": "npx playwright test --project=chromium --project=likeCounterTest --project=loginUITest --workers=1"
   },
   "repository": {
     "type": "git",
