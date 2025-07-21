@@ -51,19 +51,19 @@ export default defineConfig({
     },
     {
       name: 'chromium',
-      testIgnore: 'testLikesWithSetUp.spec.ts',
+      testIgnore: ['testLikesWithSetUp.spec.ts, testLogin.spec.ts'],
       use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json'},
       dependencies: ['setup']
     },
     {
       name: 'firefox',
-      testIgnore: 'testLikesWithSetUp.spec.ts',
+      testIgnore: ['testLikesWithSetUp.spec.ts, testLogin.spec.ts'],
       use: { ...devices['Desktop Firefox'], storageState: '.auth/user.json'},
       dependencies: ['setup']
     },
     {
       name: 'webkit',
-      testIgnore: 'testLikesWithSetUp.spec.ts',
+      testIgnore: ['testLikesWithSetUp.spec.ts, testLogin.spec.ts'],
       use: { ...devices['Desktop Safari'], storageState: '.auth/user.json'},
       dependencies: ['setup']
     },
@@ -73,7 +73,11 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json' },
       dependencies: ['articleSetup']
     },
-
+    {
+      name: 'loginUITest',
+      testMatch: 'testLogin.spec.ts',
+      use: { ...devices['Desktop Chrome']}
+    },
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
