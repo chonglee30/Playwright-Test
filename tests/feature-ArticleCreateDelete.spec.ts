@@ -26,7 +26,12 @@ test('Delete an article from UI', async ({ page, request}) => {
   const slugId = articleResponseBody.article.slug 
 
   await page.getByText('Global Feed').click()
-  await waitForCompleteLoading(page);    
+  const allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
+  expect(allArticlesResponse.status()).toBe(200)
+  const allArticlesResponseBody = await allArticlesResponse.json();
+  expect.soft(allArticlesResponseBody.articles[0].title).toBe(`${title}`)
+  await expect(page.locator(':text("Loading articles...")')).toBeHidden()
+   
   await page.waitForSelector(`a[href="/article/${slugId}"]`);
   await page.locator(`a[href="/article/${slugId}"]`).click();
   await page.getByRole('button', {name: "Delete Article"}).first().click()
