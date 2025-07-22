@@ -20,9 +20,13 @@ test('Delete an article from UI', async ({ page, request}) => {
     }, 
   })
   expect(articleResponse.status()).toEqual(201)
+  const articleResponseBody = await articleResponse.json()
+  const slugId = articleResponseBody.article.slug 
 
   await page.getByText('Global Feed').click()
-  await page.locator('app-article-preview', {hasText: `${title}`}).click()
+  await page.waitForSelector(`a[href="/article/${slugId}"]`);
+  await page.locator(`a[href="/article/${slugId}"]`).click();
+  //await page.locator('app-article-preview', {hasText: `${title}`}).click()
   //await page.locator('app-article-preview').getByRole('link', { name: `${title}` }).click()
 
   await page.getByRole('button', {name: "Delete Article"}).first().click()
