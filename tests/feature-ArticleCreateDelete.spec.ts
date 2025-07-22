@@ -11,6 +11,7 @@ test.beforeEach(async ({page}) => {
 test.describe.configure({ retries: 3 }); // This group will retry up to 2 times
 // Article is created using API
 test('Delete an article from UI', async ({ page, request}) => {
+  console.log('Feature - Delete Article From UI Test')
   const title = faker.lorem.words({min:1, max:1})
   const description = faker.lorem.sentences({min:1, max:5})
   const body = faker.lorem.paragraphs({min:1, max:5})
@@ -24,11 +25,14 @@ test('Delete an article from UI', async ({ page, request}) => {
   const slugId = articleResponseBody.article.slug 
 
   await page.getByText('Global Feed').click()
+  const allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
+  expect(allArticlesResponse.status()).toBe(200)
+  const allArticlesResponseBody = await allArticlesResponse.json();
+  expect.soft(allArticlesResponseBody.articles[0].title).toBe(`${title}`)
+  await expect(page.locator(':text("Loading articles...")')).toBeHidden()
+
   await page.waitForSelector(`a[href="/article/${slugId}"]`);
   await page.locator(`a[href="/article/${slugId}"]`).click();
-  //await page.locator('app-article-preview', {hasText: `${title}`}).click()
-  //await page.locator('app-article-preview').getByRole('link', { name: `${title}` }).click()
-
   await page.getByRole('button', {name: "Delete Article"}).first().click()
 
   // Verify Article is deleted
@@ -38,6 +42,7 @@ test('Delete an article from UI', async ({ page, request}) => {
 
 // Delete an article using API
 test ('Create an article from UI', async({page,request}) => {
+    console.log('Feature - Create an Article From UI Test')
     const title = faker.lorem.words({min:1, max:5})
     const description = faker.lorem.sentences({min:1, max:5})
     const body = faker.lorem.paragraphs({min:1, max:5})
@@ -51,15 +56,25 @@ test ('Create an article from UI', async({page,request}) => {
     const articleResponse = await page.waitForResponse('https://conduit-api.bondaracademy.com/api/articles/')
     const articleResponseBody = await articleResponse.json()
     const slugId = articleResponseBody.article.slug 
-    
     await expect(page.locator('.article-page h1')).toHaveText(`${title}`)
+
     await page.getByText('Home').click()
-    await page.getByText('Global Feed').click()
-    await expect(page.locator('app-article-list .article-preview h1').first()).toHaveText(`${title}`)
-    
+    let allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
+    expect(allArticlesResponse.status()).toBe(200)
+    await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
+
+    await page.getByText('Global Feed').click()    
+    allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
+    expect(allArticlesResponse.status()).toBe(200)
+    await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
+
+    await expect(page.locator('app-article-list .article-preview h1').first()).toHaveText(`${title}`)    
     const deleteArticleResponse = await request.delete(`https://conduit-api.bondaracademy.com/api/articles/${slugId}`)  
     expect(deleteArticleResponse.status()).toEqual(204)
 
     await page.reload();
+    allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
+    expect(allArticlesResponse.status()).toBe(200)
+    await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
     await expect(page.locator('app-article-list .article-preview h1').first()).not.toHaveText(`${title}`)
 } )

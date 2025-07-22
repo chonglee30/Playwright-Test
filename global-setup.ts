@@ -1,6 +1,7 @@
 import { expect, request } from "@playwright/test"
 import user from '../Playwright-Test/.auth/user.json'
 import fs from 'fs'
+import {faker} from '@faker-js/faker'
 
 async function globalSetup() {
   const context = await request.newContext(); // Reason: need this because very low level framework
@@ -17,13 +18,14 @@ async function globalSetup() {
   const accessToken = responseBody.user.token 
   user.origins[0].localStorage[0].value = accessToken
   fs.writeFileSync(authFile, JSON.stringify(user))
-
   process.env['ACCESS_TOKEN'] = accessToken
+  const globalTitle = "Global-"+faker.lorem.words({min:1, max:1})
+  //"Global Likes Test Title3"
+  process.env['GLOBAL_TITLE'] = globalTitle
 
-  //console.log(process.env['ACCESS_TOKEN'])
   const articleResponse = await context.post('https://conduit-api.bondaracademy.com/api/articles/', {
       data: {
-        "article":{"title":"Global Likes Test Title3","description":"Global Likes","body":"Global-Likes Test Desc","tagList":[]}
+        "article":{"title":`${globalTitle}`,"description":"Global Likes","body":"Global-Likes Test Desc","tagList":[]}
       }, 
       headers: { 
         Authorization: `Token ${process.env.ACCESS_TOKEN}`

@@ -2,10 +2,14 @@ import { test, expect } from '@playwright/test';
 test.describe('Global Test Likes' , () => {
 test.describe.configure({ retries: 3 });
   test('check Likes Counter Number using Global', async ({ page }) => {
-    console.log('Step3: Check Likes Counter')
+    console.log('Step3: Global - Check Likes Counter')
     await page.goto('/');
     await page.getByText('Global Feed').click()
-    await expect(page.locator('app-article-preview', {hasText: "Global Likes Test Title3"})).toBeVisible()
+    let allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
+    expect(allArticlesResponse.status()).toBe(200)
+    await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
+
+    await expect(page.locator('app-article-preview', {hasText: `${process.env.GLOBAL_TITLE}`})).toBeVisible()
     const likesButton = page.locator('app-favorite-button button').first()
     await expect(likesButton).toContainText('0')
     await likesButton.click()

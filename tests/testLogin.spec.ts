@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Login Test', () => {
   test('successful User Log In Test', async ({ page }) => {
+    console.log('Login UI Test')
     await page.goto('/') 
     await page.getByText('Sign in').click()
     expect(await page.locator('.auth-page h1').textContent()).toEqual('Sign in')

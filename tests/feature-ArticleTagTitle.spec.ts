@@ -15,6 +15,7 @@ test.beforeEach(async ({page}) => {
 })
 
 test('Check mocked article tags', async ({ page }) => {
+  console.log('Feature - Checked Mocked Article Tag Test')
   await expect(page.getByText('playwright')).toBeVisible();
    
   const tagLists = page.locator('.sidebar .tag-list a')
@@ -25,6 +26,7 @@ test('Check mocked article tags', async ({ page }) => {
 })
 
 test('Check mocked article title and description', async ({ page }) => {
+  console.log('Feature - Checked Mocked Article Title and Description Test')
   await page.route('*/**/api/articles*', async route => {
     const response = await route.fetch()
     const responseBody = await response.json()
@@ -37,6 +39,9 @@ test('Check mocked article title and description', async ({ page }) => {
   })
 
   await page.getByText('Global Feed').click()
+  let allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
+  expect(allArticlesResponse.status()).toBe(200)
+  await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
   await expect(page.locator('app-article-list .article-preview h1').first()).toHaveText('Mocked Article Title')
   await expect(page.locator('app-article-list .article-preview p').first()).toContainText('Mocked Article Description')
   await page.unrouteAll({ behavior: 'ignoreErrors' });
