@@ -12,7 +12,8 @@ async function globalSetup() {
       "user":{"email":"vantest1@test.com","password":"Welcome#1"}
     }
   })
-
+  
+  
   console.log('Step1: Create Global Setup') 
   const responseBody = await responseToken.json() // representation of response
   const accessToken = responseBody.user.token 

@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { request } from 'http';
 import {faker} from '@faker-js/faker'
+import { waitForCompleteLoading } from '../utils/common-waiting';
 
 test.beforeEach(async ({page}) => {
   await page.goto('/') //https://conduit.bondaracademy.com/
@@ -25,18 +26,14 @@ test('Delete an article from UI', async ({ page, request}) => {
   const slugId = articleResponseBody.article.slug 
 
   await page.getByText('Global Feed').click()
-  const allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
-  expect(allArticlesResponse.status()).toBe(200)
-  const allArticlesResponseBody = await allArticlesResponse.json();
-  expect.soft(allArticlesResponseBody.articles[0].title).toBe(`${title}`)
-  await expect(page.locator(':text("Loading articles...")')).toBeHidden()
-
+  await waitForCompleteLoading(page);    
   await page.waitForSelector(`a[href="/article/${slugId}"]`);
   await page.locator(`a[href="/article/${slugId}"]`).click();
   await page.getByRole('button', {name: "Delete Article"}).first().click()
 
   // Verify Article is deleted
-  await page.getByText('Global Feed').click()
+  await page.getByText('Global Feed').click();
+  await waitForCompleteLoading(page);    
   await expect(page.locator('app-article-list .article-preview h1').first()).not.toHaveText(`${title}`)
 })
 
@@ -59,22 +56,16 @@ test ('Create an article from UI', async({page,request}) => {
     await expect(page.locator('.article-page h1')).toHaveText(`${title}`)
 
     await page.getByText('Home').click()
-    let allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
-    expect(allArticlesResponse.status()).toBe(200)
-    await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
-
+    await waitForCompleteLoading(page);      
     await page.getByText('Global Feed').click()    
-    allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
-    expect(allArticlesResponse.status()).toBe(200)
-    await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
+    await waitForCompleteLoading(page);      
 
     await expect(page.locator('app-article-list .article-preview h1').first()).toHaveText(`${title}`)    
     const deleteArticleResponse = await request.delete(`https://conduit-api.bondaracademy.com/api/articles/${slugId}`)  
     expect(deleteArticleResponse.status()).toEqual(204)
 
     await page.reload();
-    allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
-    expect(allArticlesResponse.status()).toBe(200)
+    await waitForCompleteLoading(page);   
     await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
     await expect(page.locator('app-article-list .article-preview h1').first()).not.toHaveText(`${title}`)
 } )

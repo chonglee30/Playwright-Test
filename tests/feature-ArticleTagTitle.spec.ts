@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import tags from '../fixtures/tags.json'
+import { waitForCompleteLoading } from '../utils/common-waiting';
 
 test.beforeEach(async ({page}) => {
   // https://conduit-api.bondaracademy.com/api/tags
@@ -39,9 +40,7 @@ test('Check mocked article title and description', async ({ page }) => {
   })
 
   await page.getByText('Global Feed').click()
-  let allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
-  expect(allArticlesResponse.status()).toBe(200)
-  await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
+  await waitForCompleteLoading(page);  
   await expect(page.locator('app-article-list .article-preview h1').first()).toHaveText('Mocked Article Title')
   await expect(page.locator('app-article-list .article-preview p').first()).toContainText('Mocked Article Description')
   await page.unrouteAll({ behavior: 'ignoreErrors' });
