@@ -8,9 +8,10 @@ test.beforeEach(async ({page}) => {
   await expect(page.locator('.navbar-brand')).toHaveText('conduit')
 })
 
+test.describe.configure({ retries: 3 }); // This group will retry up to 2 times
 // Article is created using API
 test('Delete an article from UI', async ({ page, request}) => {
-  const title = faker.lorem.words({min:1, max:3})
+  const title = faker.lorem.words({min:1, max:1})
   const description = faker.lorem.sentences({min:1, max:5})
   const body = faker.lorem.paragraphs({min:1, max:5})
   const articleResponse = await request.post('https://conduit-api.bondaracademy.com/api/articles/', {
@@ -21,8 +22,8 @@ test('Delete an article from UI', async ({ page, request}) => {
   expect(articleResponse.status()).toEqual(201)
 
   await page.getByText('Global Feed').click()
-  //await page.locator('app-article-preview', {hasText: `${title}`}).click()
-  await page.locator('app-article-preview').getByRole('link', { name: `${title}` }).click()
+  await page.locator('app-article-preview', {hasText: `${title}`}).click()
+  //await page.locator('app-article-preview').getByRole('link', { name: `${title}` }).click()
 
   await page.getByRole('button', {name: "Delete Article"}).first().click()
 

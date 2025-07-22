@@ -4,6 +4,9 @@ setup('Delete article', async({request}) => {
   console.log('Step4: Delete Article Cleanup')
   const deleteArticleResponse = await request.delete(`https://conduit-api.bondaracademy.com/api/articles/${ process.env.SLUGID}`, { 
   })
-  
   expect(deleteArticleResponse.status()).toEqual(204)
+
+  const getArticleResponse = await request.get(`https://conduit-api.bondaracademy.com/api/articles/${ process.env.SLUGID}`, {
+  })
+  expect(getArticleResponse.status()).toEqual(404)
 })
