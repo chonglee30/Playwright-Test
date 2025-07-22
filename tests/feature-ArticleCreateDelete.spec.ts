@@ -14,7 +14,7 @@ test.describe.configure({ retries: 3 }); // This group will retry up to 2 times
 test('Delete an article from UI', async ({ page, request}) => {
   console.log('Feature - Delete Article From UI Test')
   const articleDetails = generateRandomArticleDetails();
-  const articleResponse = await request.post('https://conduit-api.bondaracademy.com/api/articles/', {
+  const articleResponse = await request.post(`${process.env.API_URL}/api/articles/`, {
     data: {
       "article":{"title":`${articleDetails.title}`,"description":`${articleDetails.description}`,"body":`${articleDetails.body}`,"tagList":[]}
     }, 
