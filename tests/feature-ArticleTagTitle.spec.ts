@@ -10,7 +10,7 @@ test.beforeEach(async ({page}) => {
     })
   })
 
-  await page.goto('/') //https://conduit.bondaracademy.com/
+  await page.goto('/') 
   expect(await page.title()).toEqual('Conduit | Practice Test Automation')
   await expect(page.locator('.navbar-brand')).toHaveText('conduit')
 })

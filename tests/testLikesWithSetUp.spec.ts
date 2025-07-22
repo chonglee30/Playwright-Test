@@ -8,8 +8,8 @@ test.describe.configure({ retries: 3 });
     await page.goto('/');
     await page.getByText('Global Feed').click()
     await waitForCompleteLoading(page);
-
-    await expect(page.locator('app-article-preview', {hasText: "Likes Test3 Title"})).toBeVisible()
+   
+    await expect(page.locator('app-article-preview', {hasText: `${process.env.PROJECT_TITLE}`})).toBeVisible()
     const likesButton = page.locator('app-favorite-button button').first()
     await expect(likesButton).toContainText('0')
     await likesButton.click()
