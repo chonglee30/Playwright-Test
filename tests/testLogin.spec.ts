@@ -15,6 +15,7 @@ test.describe('Login Test', () => {
     await passwordTextBox.clear()
     await passwordTextBox.fill(process.env.TEST_PASSWORD!)    
     await page.getByRole('button', {name: "Sign in"}).click()
-    expect(await page.locator(`a[href="/profile/${username}"]`).textContent()).toContain(`${username}`)
+    const userInfo = await page.locator('app-layout-header').getByRole('link', { name: `${username}` }).textContent()
+    expect (userInfo).toContain(`${username}`)
   });
 });
