@@ -8,7 +8,7 @@ async function globalSetup() {
   const context = await request.newContext(); // Reason: need this because very low level framework
   const authFile = '.auth/user.json'
 
-  const responseToken = await context.post(`${process.env.API_URL}/api/users/login`, {
+  const responseToken = await context.post(`${process.env.API_URL}api/users/login`, {
     data: {
       "user":{"email":"vantest1@test.com","password":"Welcome#1"}
     }
@@ -24,7 +24,7 @@ async function globalSetup() {
   const globalTitle = "Global-"+articleDetails.title
   process.env['GLOBAL_TITLE'] = globalTitle
 
-  const articleResponse = await context.post(`${process.env.API_URL}/api/articles/`, {
+  const articleResponse = await context.post(`${process.env.API_URL}api/articles/`, {
       data: {
         "article":{"title":`${globalTitle}`,"description":`${articleDetails.description}`,"body":`${articleDetails.body}`,"tagList":[]}
       }, 

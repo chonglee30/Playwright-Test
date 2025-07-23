@@ -2,7 +2,7 @@ import { expect, request } from "@playwright/test"
 
 async function globalTeardown() {
    const context = await request.newContext()
-   const deleteArticleResponse = await context.delete(`${process.env.API_URL}/api/articles/${process.env.SLUGID}`, { 
+   const deleteArticleResponse = await context.delete(`${process.env.API_URL}api/articles/${process.env.SLUGID}`, { 
     headers: {
       Authorization: `Token ${process.env.ACCESS_TOKEN}`
     }
@@ -10,7 +10,7 @@ async function globalTeardown() {
     
    expect(deleteArticleResponse.status()).toEqual(204)
 
-   const getArticleResponse = await context.get(`${process.env.API_URL}/api/articles/${process.env.SLUGID}`, {
+   const getArticleResponse = await context.get(`${process.env.API_URL}api/articles/${process.env.SLUGID}`, {
     headers: {
       Authorization: `Token ${process.env.ACCESS_TOKEN}`
     }
