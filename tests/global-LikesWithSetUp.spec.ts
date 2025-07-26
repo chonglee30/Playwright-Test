@@ -10,7 +10,10 @@ test.describe.configure({ retries: 3 });
     await waitForCompleteLoading(page);    
 
     await expect(page.locator('app-article-preview', {hasText: `${process.env.GLOBAL_TITLE}`})).toBeVisible()
-    const likesButton = page.locator('app-favorite-button button').first()
+    const articleLink = page.locator(`a[href="/article/${process.env.GLOBAL_SLUGID}"]`);
+    const articleMeta = articleLink.locator('xpath=./preceding-sibling::app-article-meta'); // Selects the 'span' immediately before the target paragraph
+    const likesButton = articleMeta.locator('app-favorite-button button').first()
+    
     await expect(likesButton).toContainText('0')
     await likesButton.click()
     await expect(likesButton).toContainText('1')

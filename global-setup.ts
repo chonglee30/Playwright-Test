@@ -14,7 +14,7 @@ async function globalSetup() {
     }
   })
   
-  console.log('Step1: Create Global Setup') 
+  console.log('Step1: Create Global Article Setup') 
   const responseBody = await responseToken.json() // representation of response
   const accessToken = responseBody.user.token 
   user.origins[0].localStorage[0].value = accessToken
@@ -35,7 +35,7 @@ async function globalSetup() {
     expect(articleResponse.status()).toEqual(201)
     const response = await articleResponse.json()
     const slugId = response.article.slug
-    process.env['SLUGID'] = slugId
+    process.env['GLOBAL_SLUGID'] = slugId
 }
 
 export default globalSetup;
