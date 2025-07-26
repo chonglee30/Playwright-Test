@@ -3,13 +3,17 @@ import { request } from 'http';
 import { waitForCompleteLoading } from '../utils/common-waiting';
 import {generateRandomArticleDetails} from '../utils/data-generators';
 
+test.describe.configure({
+  mode: 'default',
+  retries: 3
+})
+
 test.beforeEach(async ({page}) => {
   await page.goto('/') 
   expect(await page.title()).toEqual('Conduit | Practice Test Automation')
   await expect(page.locator('.navbar-brand')).toHaveText('conduit')
 })
 
-test.describe.configure({ retries: 3 }); // This group will retry up to 2 times
 // Article is created using API
 test('Delete an article from UI', async ({ page, request}) => {
   console.log('Feature - Delete Article From UI Test')

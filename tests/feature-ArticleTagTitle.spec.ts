@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import tags from '../fixtures/tags.json'
 import { waitForCompleteLoading } from '../utils/common-waiting';
 
+test.describe.configure({mode: 'default'})
 test.beforeEach(async ({page}) => {
   // https://conduit-api.bondaracademy.com/api/tags
   await page.route('*/**/api/tags', async route => {

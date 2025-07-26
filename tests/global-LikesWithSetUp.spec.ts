@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 import { waitForCompleteLoading } from '../utils/common-waiting';
 
 test.describe('Global Test Likes' , () => {
-test.describe.configure({ retries: 3 });
   test('check Likes Counter Number using Global', async ({ page }) => {
     console.log('Step3: Global - Check Likes Counter')
     await page.goto('/');
