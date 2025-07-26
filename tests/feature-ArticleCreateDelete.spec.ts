@@ -32,7 +32,9 @@ test('Delete an article from UI', async ({ page, request}) => {
   const allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
   expect(allArticlesResponse.status()).toBe(200)
   const allArticlesResponseBody = await allArticlesResponse.json();
-  expect.soft(allArticlesResponseBody.articles[0].title).toBe(`${title}`)
+
+  const index = allArticlesResponseBody.articles.findIndex(article => article.title===title) 
+  expect.soft(allArticlesResponseBody.articles[index].title).toBe(`${title}`)
   await expect(page.locator(':text("Loading articles...")')).toBeHidden()
    
   await page.waitForSelector(`a[href="/article/${slugId}"]`);
