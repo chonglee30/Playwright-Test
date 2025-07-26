@@ -1,0 +1,11 @@
+version: '2.38.2'
+services:
+  playwright-test:
+    image: pw-tests
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command:  npm run projects-chrome
+    volumes:
+      - ./playwright-report/:/app/playwright-report
+      - ./test-results/:/app/test-results

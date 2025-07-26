@@ -1,5 +1,6 @@
 import { expect, request } from "@playwright/test"
-import user from '../Playwright-Test/.auth/user.json'
+//import user from '../Playwright-Test/.auth/user.json'
+import user from './.auth/user.json'
 import fs from 'fs'
 import {faker} from '@faker-js/faker'
 import {generateRandomArticleDetails} from './utils/data-generators';
@@ -21,7 +22,7 @@ async function globalSetup() {
   fs.writeFileSync(authFile, JSON.stringify(user))
   process.env['ACCESS_TOKEN'] = accessToken
   const articleDetails = generateRandomArticleDetails();
-  const globalTitle = "Global-"+articleDetails.title
+  const globalTitle = "Global-"+articleDetails.title+Date.now()
   process.env['GLOBAL_TITLE'] = globalTitle
 
   const articleResponse = await context.post(`${process.env.API_URL}api/articles/`, {

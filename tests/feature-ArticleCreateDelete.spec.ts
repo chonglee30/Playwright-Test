@@ -33,7 +33,7 @@ test('Delete an article from UI', async ({ page, request}) => {
   expect(allArticlesResponse.status()).toBe(200)
   const allArticlesResponseBody = await allArticlesResponse.json();
 
-  const index = allArticlesResponseBody.articles.findIndex(article => article.title===title) 
+  const index = allArticlesResponseBody.articles.findIndex(article => article.title==title) 
   expect.soft(allArticlesResponseBody.articles[index].title).toBe(`${title}`)
   await expect(page.locator(':text("Loading articles...")')).toBeHidden()
    
