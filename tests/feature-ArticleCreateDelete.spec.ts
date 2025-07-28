@@ -37,6 +37,8 @@ test('Delete an article from UI', async ({ page, request}) => {
   expect.soft(allArticlesResponseBody.articles[index].title).toBe(`${title}`)
   await expect(page.locator(':text("Loading articles...")')).toBeHidden()
    
+  const articleList = page.locator('app-article-list')
+  await expect(articleList).toContainText(title)
   await page.waitForSelector(`div.article-preview a[href="/article/${slugId}"]`);
   await page.locator(`a[href="/article/${slugId}"]`).click();
   await page.getByRole('button', {name: "Delete Article"}).first().click()

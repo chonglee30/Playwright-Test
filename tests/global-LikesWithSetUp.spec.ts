@@ -7,7 +7,8 @@ test.describe('Global Test Likes' , () => {
     await page.goto('/');
     await page.getByText('Global Feed').click()
     await waitForCompleteLoading(page);    
-
+    const articleList = page.locator('app-article-list')
+    await expect(articleList).toContainText(`${process.env.GLOBAL_TITLE}`)
     await expect(page.locator('app-article-preview', {hasText: `${process.env.GLOBAL_TITLE}`})).toBeVisible()
     const articleLink = page.locator(`a[href="/article/${process.env.GLOBAL_SLUGID}"]`);
     const articleMeta = articleLink.locator('xpath=./preceding-sibling::app-article-meta'); // Selects the 'span' immediately before the target paragraph
