@@ -4,9 +4,13 @@ on:
       branches: [ main, master ]
     pull_request:
       branches: [ main, master ]
+
+    # Trigger nightly at 18:00 UTC (equivalent to 1 AM Pacific time)
+    schedule:
+      - cron: '0 18 * * *'   
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
     - name: Checkout       
@@ -17,6 +21,10 @@ jobs:
       run: |
         docker --version
         docker compose version # Verify that 'docker compose' (v2) is available
+    - name: Show local time (for reference)
+      run: |
+        echo "Current time in UTC: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        echo "Current time in PDT: $(TZ='America/Los_Angeles' date '+%Y-%m-%d %H:%M:%S PDT')"    
     - name: Build and run Docker Compose
       run: |
         docker compose up --build --abort-on-container-exit
@@ -25,4 +33,4 @@ jobs:
       with:
         name: playwright-report
         path: playwright-report/
-        retention-days: 30
+        retention-days: 15
