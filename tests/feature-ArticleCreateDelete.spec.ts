@@ -32,12 +32,15 @@ test('Delete an article from UI', async ({ page, request}) => {
   await page.getByText('Global Feed').click()
   const allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
   expect(allArticlesResponse.status()).toBe(200)
-  const allArticlesResponseBody = await allArticlesResponse.json();
-  expect(allArticlesResponseBody).toBeDefined();
-  expect(allArticlesResponseBody.articles.length).toBeGreaterThan(0)
 
-  const index = allArticlesResponseBody.articles.findIndex(article => article.title==title) 
-  expect.soft(allArticlesResponseBody.articles[index].title).toBe(`${title}`)
+  await expect(async () => { 
+    const allArticlesResponseBody = await allArticlesResponse.json();
+    expect(allArticlesResponseBody).toBeDefined();
+    expect(allArticlesResponseBody.articles.length).toBeGreaterThan(0)
+    const index = allArticlesResponseBody.articles.findIndex(article => article.title==title) 
+    expect.soft(allArticlesResponseBody.articles[index].title).toBe(`${title}`)
+  }).toPass({timeout: 10000, intervals: [500, 1000]});
+
   await expect(page.locator(':text("Loading articles...")')).toBeHidden()
    
   const articleList = page.locator('app-article-list')
