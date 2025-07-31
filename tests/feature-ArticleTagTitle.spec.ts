@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import tags from '../fixtures/tags.json'
 import { waitForCompleteLoading } from '../utils/common-waiting';
+import {isArrayDataUnique} from '../utils/arrayDataCheck';
 
 test.describe.configure({mode: 'default'})
 test.beforeEach(async ({page}) => {
@@ -45,4 +46,10 @@ test('Check mocked article title and description', async ({ page }) => {
   await expect(page.locator('app-article-list .article-preview h1').first()).toHaveText('Mocked Article Title')
   await expect(page.locator('app-article-list .article-preview p').first()).toContainText('Mocked Article Description')
   await page.unrouteAll({ behavior: 'ignoreErrors' });
+})
+
+test('Check Article Titles are unique', async ({ page }) => {
+  const articles = await page.locator('app-article-list .article-preview h1').allTextContents()
+  const checkUniqueArticle = isArrayDataUnique(articles)
+  expect(checkUniqueArticle).toBeTruthy();
 })
