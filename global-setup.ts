@@ -4,6 +4,7 @@ import user from './.auth/user.json'
 import fs from 'fs'
 import {faker} from '@faker-js/faker'
 import {generateRandomArticleDetails} from './utils/data-generators';
+import {getDateTimePST} from './utils/date-time-generator';
 
 async function globalSetup() {
   const context = await request.newContext(); // Reason: need this because very low level framework
@@ -27,7 +28,7 @@ async function globalSetup() {
 
   const articleResponse = await context.post(`${process.env.API_URL}api/articles/`, {
       data: {
-        "article":{"title":`${globalTitle}`,"description":`${articleDetails.description}`,"body":`${articleDetails.body}`,"tagList":[]}
+        "article":{"title":`${globalTitle}`,"description":`${articleDetails.description+getDateTimePST()}`,"body":`${articleDetails.body}`,"tagList":[]}
       }, 
       headers: { 
         Authorization: `Token ${process.env.ACCESS_TOKEN}`

@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { request } from 'http';
 import { waitForCompleteLoading } from '../utils/common-waiting';
 import {generateRandomArticleDetails} from '../utils/data-generators';
+import {getDateTimePST} from '../utils/date-time-generator';
 
 test.describe.configure({
   mode: 'default',
@@ -19,9 +20,11 @@ test('Delete an article from UI', async ({ page, request}) => {
   console.log('Feature - Delete Article From UI Test')
   const articleDetails = generateRandomArticleDetails();
   const title = "Dodgers-"+articleDetails.title
+  const description = articleDetails.description+getDateTimePST()
+
   const articleResponse = await request.post('https://conduit-api.bondaracademy.com/api/articles/', {
     data: {
-      "article":{"title":`${title}`,"description":`${articleDetails.description}`,"body":`${articleDetails.body}`,"tagList":[]}
+      "article":{"title":`${title}`,"description":`${description}`,"body":`${articleDetails.body}`,"tagList":[]}
     }, 
   })
   expect(articleResponse.status()).toEqual(201)
@@ -62,7 +65,7 @@ test ('Create an article from UI', async({page,request}) => {
     const title = articleDetails.title+Date.now()
     await page.getByText('New Article').click()
     await page.getByRole('textbox', {name: 'Article Title'}).fill(`${title}`)
-    await page.getByRole('textbox', {name: 'What\'s this article about?'}).fill(`${articleDetails.description}`)
+    await page.getByRole('textbox', {name: 'What\'s this article about?'}).fill(`${articleDetails.description+getDateTimePST()}`)
     await page.getByRole('textbox', {name: 'Write your article (in markdown)'}).fill(`${articleDetails.body}`)
     await page.getByRole('button', {name: 'Publish Article'}).click()
 

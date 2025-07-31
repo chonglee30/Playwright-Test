@@ -1,5 +1,6 @@
 import { test as setup, expect } from '@playwright/test';
 import {generateRandomArticleDetails} from '../utils/data-generators';
+import {getDateTimePST} from '../utils/date-time-generator';
 
 setup('create new article', async({request}) => {
   console.log('Step2: Create Article Setup')
@@ -8,7 +9,7 @@ setup('create new article', async({request}) => {
 
   const articleResponse = await request.post(`${process.env.API_URL}api/articles/`, {
     data: {
-      "article":{"title":`${projectTitle}`,"description":`${articleDetails.description}`,"body":`${articleDetails.body}`,"tagList":[]}
+      "article":{"title":`${projectTitle}`,"description":`${articleDetails.description+getDateTimePST()}`,"body":`${articleDetails.body}`,"tagList":[]}
     }, 
   })
   expect(articleResponse.status()).toEqual(201)
