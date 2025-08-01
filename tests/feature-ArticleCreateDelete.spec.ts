@@ -56,7 +56,7 @@ test('Delete an article from UI', async ({ page, request}) => {
   await page.getByText('Global Feed').click();
   await waitForCompleteLoading(page);    
   await expect(page.locator('app-article-list .article-preview h1').first()).not.toHaveText(`${title}`)
-})
+});
 
 // Delete an article using API
 test ('Create an article from UI', async({page,request}) => {
@@ -87,4 +87,42 @@ test ('Create an article from UI', async({page,request}) => {
     await waitForCompleteLoading(page);   
     await expect(page.locator(':text("Loading articles...")')).not.toBeVisible()
     await expect(page.locator('app-article-list .article-preview h1').first()).not.toHaveText(`${title}`)
-} )
+});
+
+test ('Check all article titles and slugs are unique', async({request}) => {
+  const url = process.env.API_URL!+"api/articles"
+  const queryParams = {
+    limit:10,
+    offset:0
+  }
+
+  const response = await request.get(url, {
+    params: queryParams
+  });
+
+  expect(response.ok()).toBeTruthy();
+  expect(response.status()).toBe(200);
+  const responseBody = await response.json();
+  expect(Array.isArray(responseBody.articles)).toBeTruthy();
+
+  const titleSet = new Set();
+  const titleArray: string[] = [];
+  const slugSet = new Set();
+  const slugArray: string[] = []; 
+
+  responseBody.articles.forEach(article => {
+    if (!titleSet.has(article.title)) {
+      titleSet.add(article.title)
+      slugSet.add(article.slug)
+    } else {
+      titleArray.push(article.title)
+      slugArray.push(article.slug)
+    }
+  });
+
+  expect(titleArray).toHaveLength(0)
+  expect(titleArray).toEqual([])
+
+  expect(slugArray).toHaveLength(0)
+  expect(slugArray).toEqual([])
+});
