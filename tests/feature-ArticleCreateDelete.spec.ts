@@ -19,7 +19,7 @@ test.beforeEach(async ({page}) => {
 test('Delete an article from UI', async ({ page, request}) => {
   console.log('Feature - Delete Article From UI Test')
   const articleDetails = generateRandomArticleDetails();
-  const title = "Dodgers-"+articleDetails.title
+  const title = `Raiders-${articleDetails.title}-${Date.now()}`
   const description = articleDetails.description+getDateTimePST()
 
   const articleResponse = await request.post('https://conduit-api.bondaracademy.com/api/articles/', {
