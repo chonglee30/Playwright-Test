@@ -33,10 +33,9 @@ test('Delete an article from UI', async ({ page, request}) => {
   const slugId = articleResponseBody.article.slug 
 
   await page.getByText('Global Feed').click()
-  const allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
-  expect(allArticlesResponse.status()).toBe(200)
-
   await expect(async () => { 
+    const allArticlesResponse = await page.waitForResponse('**/api/articles?limit=10&offset=0');
+    expect(allArticlesResponse.status()).toBe(200)
     const allArticlesResponseBody = await allArticlesResponse.json();
     expect(allArticlesResponseBody).toBeDefined();
     expect(allArticlesResponseBody.articles.length).toBeGreaterThan(0)
