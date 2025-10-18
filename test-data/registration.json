@@ -1,0 +1,59 @@
+{
+    "username": [
+        {
+            "username": "ab",
+            "errorMsg": "username is too short (minimum is 3 characters)",
+            "isErrorMsgDisplayed": true
+        },
+        {
+            "username": "abc",
+            "errorMsg": "username",
+            "isErrorMsgDisplayed": false
+        },
+        {
+            "username": "abcdeabcdeabcdeabcde",
+            "errorMsg": "username",
+            "isErrorMsgDisplayed": false
+        },
+        {
+            "username": "abcdeabcdeabcdeabcde1",
+            "errorMsg": "username is too long (maximum is 20 characters)",
+            "isErrorMsgDisplayed": true
+        }
+    ],
+
+    "email": [
+        {
+            "email": "raiders",
+            "errorMsg": "email is invalid",
+            "isErrorMsgDisplayed": true
+        },
+        {
+            "email": "sam-donald@seahawks.com",
+            "errorMsg": "email",
+            "isErrorMsgDisplayed": false
+        }
+    ],
+    "password": [
+        {
+            "password": "clayton",
+            "errorMsg": "password is too short (minimum is 8 characters)",
+            "isErrorMsgDisplayed": true
+        },
+        {
+            "password": "felicity",
+            "errorMsg": "password",
+            "isErrorMsgDisplayed": false
+        },
+        {
+            "password": "abcdeabcdeabcdeabcde",
+            "errorMsg": "password",
+            "isErrorMsgDisplayed": false
+        },
+        {
+            "password": "abcdeabcdeabcdeabcde1",
+            "errorMsg": "password is too long (maximum is 20 characters)",
+            "isErrorMsgDisplayed": true
+        }
+    ]
+}
