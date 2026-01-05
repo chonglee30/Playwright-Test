@@ -41,8 +41,8 @@ export default defineConfig({
       'Authorization': `Token ${process.env.ACCESS_TOKEN}`
     }
   },
-  globalSetup: require.resolve('./global-setup.ts'),
-  globalTeardown: require.resolve('./global-teardown.ts'),
+  //globalSetup: require.resolve('./global-setup.ts'),
+  //globalTeardown: require.resolve('./global-teardown.ts'),
 
   /* Configure projects for major browsers */
   projects: [
@@ -60,21 +60,21 @@ export default defineConfig({
     {
       name: 'chromium',
       testMatch: /.*feature-.*\.spec\.ts$/,
-      testIgnore: ['testLikesWithSetUp.spec.ts', 'global-LikesWithSetUp.spec.ts','testLogin.spec.ts'],
+      testIgnore: ['testLikesWithSetUp.spec.ts', 'global-LikesWithSetUp.spec.ts','testLogin.spec.ts', 'testUserRegister.spec.ts'],
       use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json'},
       dependencies: ['setup']
     },
     {
       name: 'firefox',
       testMatch: /.*feature-.*\.spec\.ts$/,
-      testIgnore: ['testLikesWithSetUp.spec.ts', 'global-LikesWithSetUp.spec.ts', 'testLogin.spec.ts'],
+      testIgnore: ['testLikesWithSetUp.spec.ts', 'global-LikesWithSetUp.spec.ts', 'testLogin.spec.ts', 'testUserRegister.spec.ts'],
       use: { ...devices['Desktop Firefox'], storageState: '.auth/user.json'},
       dependencies: ['setup']
     },
     {
       name: 'webkit',
       testMatch: /.*feature-.*\.spec\.ts$/,
-      testIgnore: ['testLikesWithSetUp.spec.ts','global-LikesWithSetUp.spec.ts', 'testLogin.spec.ts'],
+      testIgnore: ['testLikesWithSetUp.spec.ts','global-LikesWithSetUp.spec.ts', 'testLogin.spec.ts', 'testUserRegister.spec.ts'],
       use: { ...devices['Desktop Safari'], storageState: '.auth/user.json'},
       dependencies: ['setup']
     },
@@ -90,8 +90,13 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json' }
     },
     {
-      name: 'loginUITest',
-      testMatch: 'testLogin.spec.ts',
+      name: 'loginRegisterUITest',
+      testMatch: ['testLogin.spec.ts','testUserRegister.spec.ts'],
+      use: { ...devices['Desktop Chrome']}
+    },
+    {
+      name: 'webSocketTest',
+      testMatch: ['OtherTests/webSocketTest.spec.ts',],
       use: { ...devices['Desktop Chrome']}
     },
     /* Test against mobile viewports. */
